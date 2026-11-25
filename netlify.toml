@@ -1,0 +1,15 @@
+"$schema" = "https://open-api.netlify.com/netlify.schema.json"
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PATENT_DATA_SOURCE = "mock"
+
+# Zip/API builds do not always auto-attach the OpenNext adapter.
+# Declaring the plugin here (without pinning it in package.json) lets
+# Netlify install the latest adapter during the cloud build.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
