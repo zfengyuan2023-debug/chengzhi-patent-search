@@ -148,7 +148,7 @@ function SearchCard({ values }: { values: SearchInput }) {
   return (
     <Card>
       <CardContent>
-        <SearchForm values={values} />
+        <SearchForm values={values} scope="utility" />
       </CardContent>
     </Card>
   );
