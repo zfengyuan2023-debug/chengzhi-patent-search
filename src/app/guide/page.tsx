@@ -12,7 +12,7 @@ export default function GuidePage() {
       <p className="text-sm font-medium text-primary">澄知</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">使用说明</h1>
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        澄知可以检索欧盟与美国外观设计，也可以用产品照片找相近外观。这一页说明数据范围和限制。
+        澄知可以检索本站欧盟与美国外观目录，也可以用产品照片找相近外观，并把同一检索词带到持续更新的官方登记簿。这一页说明数据范围和限制。
       </p>
 
       <Section id="image" title="以图搜图">
@@ -43,6 +43,22 @@ export default function GuidePage() {
         <p className="mt-2">把检索范围切换到「发明专利（美国）」后，关键词查标题和摘要。这一路仍只覆盖美国，需要 PatentsView 免费密钥才能查真实数据。</p>
       </Section>
 
+
+      <Section id="official" title="官方实时登记簿">
+        <p>
+          本站目录是公开的欧盟与美国外观快照，主要为 2025 年及以后，不会随官方登记簿自动更新。检索页和首页提供指向持续更新官方网站的链接：世界知识产权组织全球外观设计数据库（WIPO Global Design Database）、欧盟知识产权局 eSearch plus、美国专利商标局 Patent Public Search，以及发明专利用的欧洲专利局 Espacenet 和 WIPO PATENTSCOPE。
+        </p>
+        <p className="mt-2">
+          这些是在官方网站打开的检索，不是澄知代为查询后显示的实时结果。WIPO 全球外观设计数据库的使用条款禁止自动查询和批量下载，因此只会生成可分享的官方检索链接，不会抓取该库。当前站点也没有配置 EPO OPS、EUIPO 或 PatentsView 的接口密钥。
+        </p>
+        <p className="mt-2">
+          官方以图搜图无法通过网址预先上传您的照片，请在{" "}
+          <Link href="/image" className="text-primary hover:underline">
+            以图搜图
+          </Link>
+          {" "}页提供的官方入口中自行上传。WIPO PATENTSCOPE 没有已验证、能稳定带上检索词的公开网址，打开后请在官方页重新输入。
+        </p>
+      </Section>
       <Section id="limits" title="数据范围">
         <p>
           外观目录覆盖欧盟知识产权局（EUIPO）登记外观和美国专利商标局（USPTO）外观专利，主要为 2025 年 1

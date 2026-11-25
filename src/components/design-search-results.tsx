@@ -15,6 +15,7 @@ import {
   type DesignSearchInput,
 } from "@/lib/designs/search";
 import type { SearchInput } from "@/lib/patents/types";
+import { LocalCatalogBadge, OfficialSearchLinks } from "@/components/official-search-links";
 
 function hrefFor(input: DesignSearchInput, page: number): string {
   const params = new URLSearchParams();
@@ -77,6 +78,7 @@ export function DesignSearchResults({
         </CardContent>
       </Card>
 
+      <OfficialSearchLinks input={input} scope="designs" />
       <CoverageNote />
 
       {input.inventor?.trim() ? (
@@ -115,7 +117,10 @@ export function DesignSearchResults({
       {result ? (
         <>
           <div>
-            <h1 className="text-xl font-semibold">检索结果</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl font-semibold">检索结果</h1>
+              <LocalCatalogBadge />
+            </div>
             <p className="mt-1 text-sm text-muted-foreground">
               共 {result.total.toLocaleString("zh-CN")} 条
               {result.totalPages ? ` · 第 ${result.page} / ${result.totalPages} 页` : null}
@@ -158,8 +163,8 @@ export function DesignSearchResults({
 function CoverageNote() {
   return (
     <p className="text-xs leading-5 text-muted-foreground">
-      当前外观目录覆盖{DESIGN_COVERAGE.offices.map((item) => item.label).join("、")}，
-      {DESIGN_COVERAGE.period}。不是全球所有发明专利。要用照片检索，请打开
+      以上列表来自本站目录，覆盖{DESIGN_COVERAGE.offices.map((item) => item.label).join("、")}，
+      {DESIGN_COVERAGE.period}，不是官方实时登记簿，也不是全球所有发明专利。要用照片检索，请打开
       <Link href="/image" className="mx-1 text-primary hover:underline">
         以图搜图
       </Link>

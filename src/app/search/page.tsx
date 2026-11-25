@@ -15,6 +15,7 @@ import { inputFromSearchParams, parseSearchInput } from "@/lib/patents/parse-que
 import type { SearchInput } from "@/lib/patents/types";
 import { DesignSearchResults } from "@/components/design-search-results";
 import type { DesignSearchInput } from "@/lib/designs/search";
+import { OfficialSearchLinks } from "@/components/official-search-links";
 
 export const metadata: Metadata = {
   title: "检索结果",
@@ -146,11 +147,14 @@ async function SearchResults({ searchParams }: { searchParams: Promise<SearchPar
 
 function SearchCard({ values }: { values: SearchInput }) {
   return (
-    <Card>
-      <CardContent>
-        <SearchForm values={values} scope="utility" />
-      </CardContent>
-    </Card>
+    <div className="grid gap-4">
+      <Card>
+        <CardContent>
+          <SearchForm values={values} scope="utility" />
+        </CardContent>
+      </Card>
+      <OfficialSearchLinks input={values} scope="utility" />
+    </div>
   );
 }
 
