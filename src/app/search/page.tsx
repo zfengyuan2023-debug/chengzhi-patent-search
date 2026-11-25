@@ -13,6 +13,8 @@ import { hasMoreResults, nextPageQuery, pageNumber, previousPageQuery } from "@/
 import { EMPTY_QUERY_MESSAGE } from "@/lib/patents/messages";
 import { inputFromSearchParams, parseSearchInput } from "@/lib/patents/parse-query";
 import type { SearchInput } from "@/lib/patents/types";
+import { DesignSearchResults } from "@/components/design-search-results";
+import type { DesignSearchInput } from "@/lib/designs/search";
 
 export const metadata: Metadata = {
   title: "检索结果",
@@ -33,7 +35,21 @@ export default function SearchPage({ searchParams }: { searchParams: Promise<Sea
 async function SearchResults({ searchParams }: { searchParams: Promise<SearchParams> }) {
   await connection();
   const params = await searchParams;
+  const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value) ?? "";
   const input = inputFromSearchParams(params);
+  const scope = first(params.scope) === "utility" ? "utility" : "designs";
+  if (scope !== "utility") {
+    const designInput: DesignSearchInput = {
+      keyword: input.keyword,
+      number: input.number,
+      assignee: input.assignee,
+      inventor: input.inventor,
+      classification: input.classification,
+      region: first(params.region) || "ALL",
+      page: Number(first(params.page) || "1") || 1,
+    };
+    return <DesignSearchResults input={designInput} formValues={input} />;
+  }
   const parsed = parseSearchInput(input);
   const service = createPatentService();
 

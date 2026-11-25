@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "澄知专利检索",
     template: "%s · 澄知",
   },
-  description: "检索美国专利的题录、摘要与分类。数据来自免费的 USPTO PatentsView，不需要账号。",
+  description: "检索欧盟与美国外观设计，也支持以图搜图。美国发明专利可在有免费 PatentsView 密钥时检索。",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
