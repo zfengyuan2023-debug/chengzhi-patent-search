@@ -3,58 +3,57 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { getDataSourceStatus } from "@/lib/patents";
 
-const LIVE_EXAMPLES = [
-  { label: "锂电关键词", href: "/search?keyword=lithium+battery" },
-  { label: "申请人 Tesla", href: "/search?assignee=Tesla" },
-  { label: "分类号 H01M", href: "/search?classification=H01M" },
-  { label: "专利号 6285999", href: "/search?number=6285999" },
-];
-
-const MOCK_EXAMPLES = [
-  { label: "锂电关键词", href: "/search?keyword=lithium+battery" },
-  { label: "申请人 Tesla", href: "/search?assignee=Tesla" },
-  { label: "分类号 H01M", href: "/search?classification=H01M" },
-  { label: "发明人 Priya Shah", href: "/search?inventor=Priya+Shah" },
+const DESIGN_EXAMPLES = [
+  { label: "马克杯 mug", href: "/search?keyword=mug&scope=designs" },
+  { label: "收纳盒 organizer", href: "/search?keyword=organizer&scope=designs" },
+  { label: "仅欧盟 mug", href: "/search?keyword=mug&scope=designs&region=EU" },
+  { label: "仅美国 drawer", href: "/search?keyword=drawer&scope=designs&region=US" },
 ];
 
 export async function SourceNotice() {
   await connection();
   const status = getDataSourceStatus();
-  if (status.mode === "mock") {
-    return (
-      <Notice tone="info" title="当前是示例数据">
-        <p>
-          环境变量 <code className="font-mono">PATENT_DATA_SOURCE=mock</code>{" "}
-          已打开内置样例，不会请求 PatentsView。去掉该变量并配置{" "}
-          <code className="font-mono">PATENTSVIEW_API_KEY</code> 后，检索真实美国专利。
-        </p>
-        <ExampleLinks items={MOCK_EXAMPLES} />
-      </Notice>
-    );
-  }
-  if (status.mode === "unconfigured") {
-    return (
-      <Notice tone="warn" title="需要免费的 PatentsView API 密钥">
-        <p>
-          页面可以打开，但还不能检索真实专利。请在环境变量{" "}
-          <code className="font-mono">PATENTSVIEW_API_KEY</code>{" "}
-          中填入免费密钥。密钥只从环境变量读取，不会写进代码。
-        </p>
-        <p>
-          申请步骤写在项目 README 的「获取免费密钥」，应用内说明见{" "}
-          <Link href="/guide#api-key" className="font-medium text-primary hover:underline">
-            使用说明
-          </Link>
-          。不想申请时，可设置 <code className="font-mono">PATENT_DATA_SOURCE=mock</code> 先看示例检索。
-        </p>
-      </Notice>
-    );
-  }
   return (
-    <Notice tone="info" title="数据源：USPTO PatentsView">
-      <p>检索美国授权专利。公开号会转到申请公开。相同检索由服务器缓存，避免重复消耗大约每分钟 45 次的免费额度。</p>
-      <ExampleLinks items={LIVE_EXAMPLES} />
-    </Notice>
+    <div className="grid gap-3">
+      <Notice tone="info" title="默认数据：欧盟与美国外观设计">
+        <p>
+          关键词检索使用已公开的 GitHub 外观目录，覆盖欧盟知识产权局（EUIPO）登记外观和美国专利商标局（USPTO）外观专利，主要为
+          2025 年 1 月及以后。结果会标明受理局。目录不是全球发明专利库，也不包含中国、日本、韩国等地的发明专利。
+        </p>
+        <ExampleLinks items={DESIGN_EXAMPLES} />
+        <p>
+          要用照片查找相近外观，请打开{" "}
+          <Link href="/image" className="font-medium text-primary hover:underline">
+            以图搜图
+          </Link>
+          。首次大约下载 800 MB 目录和图像模型。
+        </p>
+      </Notice>
+      {status.mode === "mock" ? (
+        <Notice tone="info" title="美国发明专利目前是示例数据">
+          <p>
+            若把检索范围切换到「发明专利（美国）」，当前站点使用内置样例，不会请求 PatentsView。配置免费的{" "}
+            <code className="font-mono">PATENTSVIEW_API_KEY</code> 后，才能检索真实美国发明专利。PatentsView
+            本身也只覆盖美国。
+          </p>
+        </Notice>
+      ) : status.mode === "unconfigured" ? (
+        <Notice tone="warn" title="美国发明专利需要免费 PatentsView 密钥">
+          <p>
+            外观检索不需要密钥。若要检索美国发明专利，请在环境变量{" "}
+            <code className="font-mono">PATENTSVIEW_API_KEY</code> 中填入免费密钥。申请步骤见{" "}
+            <Link href="/guide#api-key" className="font-medium text-primary hover:underline">
+              使用说明
+            </Link>
+            。
+          </p>
+        </Notice>
+      ) : (
+        <Notice tone="info" title="美国发明专利：USPTO PatentsView">
+          <p>切换到「发明专利（美国）」后，可检索美国授权专利与申请公开。这仍然不是全球发明专利。</p>
+        </Notice>
+      )}
+    </div>
   );
 }
 

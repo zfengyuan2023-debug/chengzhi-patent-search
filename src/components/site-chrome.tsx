@@ -1,7 +1,4 @@
 import Link from "next/link";
-import { Suspense } from "react";
-import { connection } from "next/server";
-import { getDataSourceStatus } from "@/lib/patents";
 
 export function SiteHeader() {
   return (
@@ -18,9 +15,12 @@ export function SiteHeader() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
-          <Suspense fallback={<span className="text-xs text-muted-foreground">数据源</span>}>
-            <SourcePill />
-          </Suspense>
+          <Link href="/image" className="text-sm font-medium text-primary hover:text-foreground">
+            以图搜图
+          </Link>
+          <span className="hidden rounded-full bg-muted px-2 py-1 text-[11px] text-muted-foreground sm:inline sm:text-xs">
+            EUIPO + USPTO 外观
+          </span>
           <Link href="/guide" className="text-sm text-foreground/80 hover:text-foreground">
             使用说明
           </Link>
@@ -30,23 +30,11 @@ export function SiteHeader() {
   );
 }
 
-async function SourcePill() {
-  await connection();
-  const status = getDataSourceStatus();
-  const label =
-    status.mode === "mock" ? "示例数据" : status.mode === "live" ? "PatentsView" : "未配置密钥";
-  return (
-    <span className="rounded-full bg-muted px-2 py-1 text-[11px] text-muted-foreground sm:text-xs">
-      {label}
-    </span>
-  );
-}
-
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-xs leading-5 text-muted-foreground sm:flex-row sm:justify-between">
-        <p>澄知检索美国专利题录。数据来自 USPTO PatentsView 公开接口，不是官方产品，也不构成法律意见。</p>
+        <p>澄知检索欧盟 EUIPO 与美国 USPTO 外观设计（主要为 2025 年起），并支持以图搜图。不是官方产品，也不构成法律意见。</p>
         <p>
           <Link href="/guide#api-key" className="hover:text-foreground">
             免费密钥
