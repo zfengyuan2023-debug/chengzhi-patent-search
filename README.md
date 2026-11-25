@@ -6,14 +6,14 @@ colorTo: blue
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: 中文界面的美国专利题录检索，默认可示例运行
+short_description: 中文界面的欧盟与美国外观检索，支持以图搜图
 ---
 
 # 澄知专利检索
 
-自托管的专利题录检索。界面是中文，题名和摘要保持原文。当前只接免费的 [USPTO PatentsView PatentSearch API](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/)。不使用付费接口、BigQuery、WIPO PATENTSCOPE API，也不抓取 Google Patents、Espacenet 或 PATENTSCOPE。
+自托管的专利检索。界面是中文，题名保持原文。默认检索已公开的欧盟 EUIPO 与美国 USPTO 外观设计目录（主要为 2025 年及以后），并支持以图搜图。目录和图像模型来自公开仓库 [patent-image-search](https://github.com/zfengyuan2023-debug/patent-image-search)。
 
-这一版最完整的是美国授权专利。全球书目、专利族和 INPADOC 法律状态留了适配器接口，但没有实现 EPO 的在线调用。
+这不是全球发明专利库。美国发明专利仍可通过免费的 [USPTO PatentsView](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/) 检索，但需要单独的免费密钥；没有密钥时只能看示例。不使用付费接口。欧洲发明专利族需要 EPO OPS 密钥，当前未配置，因此不会假装已经覆盖全球发明专利。
 
 ## 本地运行
 

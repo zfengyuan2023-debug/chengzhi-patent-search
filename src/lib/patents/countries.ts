@@ -32,6 +32,7 @@ const NAMES: Record<string, string> = {
   NZ: "新西兰",
   ZA: "南非",
   EP: "欧洲专利局",
+  EU: "欧盟",
   WO: "WIPO",
 };
 
