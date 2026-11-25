@@ -13,7 +13,7 @@ short_description: 中文界面的欧盟与美国外观检索，支持以图搜�
 
 自托管的专利检索。界面是中文，题名保持原文。默认检索已公开的欧盟 EUIPO 与美国 USPTO 外观设计目录（主要为 2025 年及以后），并支持以图搜图。目录和图像模型来自公开仓库 [patent-image-search](https://github.com/zfengyuan2023-debug/patent-image-search)。
 
-这不是全球发明专利库。美国发明专利仍可通过免费的 [USPTO PatentsView](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/) 检索，但需要单独的免费密钥；没有密钥时只能看示例。不使用付费接口。欧洲发明专利族需要 EPO OPS 密钥，当前未配置，因此不会假装已经覆盖全球发明专利。
+这不是全球发明专利库。同一检索词可跳转到持续更新的官方登记簿：WIPO 全球外观设计数据库、EUIPO eSearch plus、USPTO Patent Public Search，以及发明专利用的 EPO Espacenet 和 WIPO PATENTSCOPE。这些是官方网站上的检索，不是澄知代查的实时接口结果；站点不会抓取或自动查询 WIPO。美国发明专利仍可通过免费的 [USPTO PatentsView](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/) 检索，但需要单独的免费密钥；没有密钥时只能看示例。不使用付费接口。欧洲发明专利族需要 EPO OPS 密钥，当前未配置。
 
 ## 本地运行
 
@@ -64,6 +64,8 @@ PATENT_DATA_SOURCE=patentsview
 带密钥时，限额大约是每分钟 45 次。同一次检索的列表和图表会各记一次；之后在缓存有效期内重复打开同一检索或同一专利，不再请求上游。
 
 ## 能检索什么
+
+默认检索本站欧盟与美国外观目录（主要为 2025 年起的快照）。检索结果页会同时给出官方实时登记簿链接，可将同一关键词带到 WIPO、EUIPO、USPTO 等官方网站。发明专利示例或 PatentsView 结果之外，也可打开 Espacenet 与 PATENTSCOPE。
 
 首页可以组合这些条件，多项之间是「同时满足」：
 

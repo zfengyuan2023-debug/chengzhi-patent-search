@@ -34,10 +34,14 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-6 text-xs leading-5 text-muted-foreground sm:flex-row sm:justify-between">
-        <p>澄知检索欧盟 EUIPO 与美国 USPTO 外观设计（主要为 2025 年起），并支持以图搜图。不是官方产品，也不构成法律意见。</p>
+        <p>澄知检索本站欧盟 EUIPO 与美国 USPTO 外观目录（主要为 2025 年起快照），并支持以图搜图；也可跳转到持续更新的官方登记簿。不是官方产品，也不构成法律意见。</p>
         <p>
           <Link href="/guide#api-key" className="hover:text-foreground">
             免费密钥
+          </Link>
+          <span aria-hidden="true"> · </span>
+          <Link href="/guide#official" className="hover:text-foreground">
+            官方登记簿
           </Link>
           <span aria-hidden="true"> · </span>
           <Link href="/guide#limits" className="hover:text-foreground">

@@ -17,8 +17,8 @@ export async function SourceNotice() {
     <div className="grid gap-3">
       <Notice tone="info" title="默认数据：欧盟与美国外观设计">
         <p>
-          关键词检索使用已公开的 GitHub 外观目录，覆盖欧盟知识产权局（EUIPO）登记外观和美国专利商标局（USPTO）外观专利，主要为
-          2025 年 1 月及以后。结果会标明受理局。目录不是全球发明专利库，也不包含中国、日本、韩国等地的发明专利。
+          本站关键词检索使用已公开的 GitHub 外观目录（快照），覆盖欧盟知识产权局（EUIPO）登记外观和美国专利商标局（USPTO）外观专利，主要为
+          2025 年 1 月及以后。结果会标明受理局。同一检索词也可在上方「官方实时登记簿」中打开 WIPO、EUIPO、USPTO 的持续更新官方检索。目录本身不是全球发明专利库，也不包含中国、日本、韩国等地的发明专利。
         </p>
         <ExampleLinks items={DESIGN_EXAMPLES} />
         <p>
