@@ -13,7 +13,7 @@ short_description: 中文界面的欧盟与美国外观检索，支持以图搜�
 
 自托管的专利检索。界面是中文，题名保持原文。默认检索已公开的欧盟 EUIPO 与美国 USPTO 外观设计目录（主要为 2025 年及以后），并支持以图搜图。目录和图像模型来自公开仓库 [patent-image-search](https://github.com/zfengyuan2023-debug/patent-image-search)。
 
-这不是全球发明专利库。同一检索词可跳转到持续更新的官方登记簿：WIPO 全球外观设计数据库、EUIPO eSearch plus、USPTO Patent Public Search，以及发明专利用的 EPO Espacenet 和 WIPO PATENTSCOPE。这些是官方网站上的检索，不是澄知代查的实时接口结果；站点不会抓取或自动查询 WIPO。美国发明专利仍可通过免费的 [USPTO PatentsView](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/) 检索，但需要单独的免费密钥；没有密钥时只能看示例。不使用付费接口。欧洲发明专利族需要 EPO OPS 密钥，当前未配置。
+这不是全球发明专利库。同一检索词可跳转到持续更新的官方登记簿：WIPO 全球外观设计数据库、EUIPO eSearch plus、USPTO Patent Public Search，德国 DPMA、法国 INPI、意大利 UIBM、西班牙 OEPM 国家外观登记簿和 DesignView，以及发明专利用的 EPO Espacenet 和 WIPO PATENTSCOPE。本站目录本身仍只含欧盟与美国外观快照。这些是官方网站上的检索，不是澄知代查的实时接口结果；站点不会抓取或自动查询 WIPO。美国发明专利仍可通过免费的 [USPTO PatentsView](https://search.patentsview.org/docs/docs/Search%20API/SearchAPIReference/) 检索，但需要单独的免费密钥；没有密钥时只能看示例。不使用付费接口。欧洲发明专利族需要 EPO OPS 密钥，当前未配置。
 
 ## 本地运行
 
