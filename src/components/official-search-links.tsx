@@ -1,13 +1,15 @@
-import { officialLinks, type OfficialQueryInput, type OfficialScope } from "@/lib/official/links";
+import {
+  officialLinks,
+  type OfficialLink,
+  type OfficialQueryInput,
+  type OfficialScope,
+} from "@/lib/official/links";
 
-const COPY: Record<
-  OfficialScope,
-  { title: string; intro: string }
-> = {
+const COPY: Record<OfficialScope, { title: string; intro: string }> = {
   designs: {
     title: "在官方实时登记簿中继续检索",
     intro:
-      "下面这些结果来自本站目录（主要为 2025 年起的欧盟与美国外观快照），不会随官方登记簿自动更新。点击链接，可将同一检索词带到持续更新的官方网站打开。澄知只提供跳转，不抓取、不批量下载、也不自动查询这些官方数据库。",
+      "下面这些结果来自本站目录（主要为 2025 年起的欧盟与美国外观快照），目前还不包含德国、法国、意大利、西班牙的国家登记外观。欧盟外观在这四国同样有效，但国家登记是另一套文件。点击链接，可将同一检索词带到持续更新的官方网站打开（能带上的会标明）。澄知只提供跳转，不抓取、不批量下载、也不自动查询这些官方数据库。",
   },
   utility: {
     title: "在官方实时专利库中继续检索",
@@ -17,9 +19,35 @@ const COPY: Record<
   image: {
     title: "在官方网站以图搜图",
     intro:
-      "本页以图搜图检索的是本站已公开的欧盟与美国外观目录（主要为 2025 年起）。官方登记簿无法通过网址预先接收您的照片，请打开后在官方页面自行上传。",
+      "本页以图搜图检索的是本站已公开的欧盟与美国外观目录（主要为 2025 年起），不含德、法、意、西国家登记外观。官方登记簿无法通过网址预先接收您的照片，请打开后在官方页面自行上传。DesignView 可同时覆盖参与局的国家外观。",
   },
 };
+
+function LinkList({ links }: { links: OfficialLink[] }) {
+  return (
+    <ul className="mt-3 grid gap-3">
+      {links.map((link) => (
+        <li key={link.id} className="rounded-lg bg-card px-3 py-3 ring-1 ring-foreground/10">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-primary hover:underline"
+            >
+              {link.office} · {link.name}
+            </a>
+            <span className="text-[11px] text-muted-foreground">
+              {link.queryCarried ? "已带上检索词" : "打开官方检索页"}
+            </span>
+          </div>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">覆盖：{link.coverage}</p>
+          {link.note ? <p className="mt-1 text-xs leading-5 text-muted-foreground">{link.note}</p> : null}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function OfficialSearchLinks({
   input,
@@ -30,6 +58,8 @@ export function OfficialSearchLinks({
 }) {
   const copy = COPY[scope];
   const links = officialLinks(input, scope);
+  const international = links.filter((link) => link.group !== "national");
+  const national = links.filter((link) => link.group === "national");
 
   return (
     <aside className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-4">
@@ -40,27 +70,22 @@ export function OfficialSearchLinks({
         </span>
       </div>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">{copy.intro}</p>
-      <ul className="mt-3 grid gap-3">
-        {links.map((link) => (
-          <li key={link.id} className="rounded-lg bg-card px-3 py-3 ring-1 ring-foreground/10">
-            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-              <a
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                {link.office} · {link.name}
-              </a>
-              <span className="text-[11px] text-muted-foreground">
-                {link.queryCarried ? "已带上检索词" : "打开官方检索页"}
-              </span>
-            </div>
-            <p className="mt-1 text-xs leading-5 text-muted-foreground">覆盖：{link.coverage}</p>
-            {link.note ? <p className="mt-1 text-xs leading-5 text-muted-foreground">{link.note}</p> : null}
-          </li>
-        ))}
-      </ul>
+      <LinkList links={international.length ? international : links} />
+      {national.length > 0 && scope !== "utility" ? (
+        <div className="mt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-sm font-semibold">德、法、意、西国家外观登记簿</h3>
+            <span className="rounded-full bg-card px-2 py-0.5 text-[11px] text-muted-foreground ring-1 ring-foreground/10">
+              官方实时 · 持续更新
+            </span>
+          </div>
+          <p className="mt-2 text-xs leading-5 text-muted-foreground">
+            这些是四国知识产权局的国家外观登记，不是本站目录中的欧盟外观。DesignView
+            可一并检索参与局的国家外观；下面同时给出各国官方登记簿入口。
+          </p>
+          <LinkList links={national} />
+        </div>
+      ) : null}
     </aside>
   );
 }

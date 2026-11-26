@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   espacenetSearchUrl,
   euipoESearchUrl,
+  dpmaDesignSearchUrl,
   officialLinks,
   officialQueryTerm,
   usptoPublicSearchUrl,
@@ -91,11 +92,19 @@ describe("officialLinks", () => {
       "wipo-designdb",
       "euipo-esearch",
       "uspto-pps-design",
+      "designview",
+      "dpma-register",
+      "inpi-data",
+      "uibm-bancadati",
+      "oepm-disenos",
     ]);
-    expect(links.every((item) => item.queryCarried)).toBe(true);
+    const carried = links.filter((item) => item.queryCarried).map((item) => item.id);
+    expect(carried).toEqual(["wipo-designdb", "euipo-esearch", "uspto-pps-design", "dpma-register"]);
     expect(links[0].href).toContain("PROD");
     expect(links[1].href).toContain("mug");
     expect(links[2].href).toContain("external.html");
+    expect(links.find((item) => item.id === "dpma-register")?.href).toContain("queryString=");
+    expect(links.find((item) => item.id === "inpi-data")?.queryCarried).toBe(false);
   });
 
   it("uses landing pages when there is no query", () => {
@@ -121,3 +130,57 @@ describe("officialLinks", () => {
     expect(links[1].href).toBe("https://euipo.europa.eu/eSearch/");
   });
 });
+
+describe("DPMA DPMAregister URLs", () => {
+  it("pre-fills the official expert-search queryString for a title term", () => {
+    const href = dpmaDesignSearchUrl("mug");
+    expect(href).toBe(
+      "https://register.dpma.de/DPMAregister/gsm/experte/autoRecherche/en?queryString=TI%3Dmug",
+    );
+  });
+
+  it("maps number, holder and Locarno fields", () => {
+    expect(new URL(dpmaDesignSearchUrl("402021000001", "number")).searchParams.get("queryString")).toBe(
+      "RN=402021000001",
+    );
+    expect(new URL(dpmaDesignSearchUrl("Siemens", "assignee")).searchParams.get("queryString")).toBe(
+      "INH=Siemens",
+    );
+    expect(new URL(dpmaDesignSearchUrl("07.01", "classification")).searchParams.get("queryString")).toBe(
+      'WKL="07.01"',
+    );
+  });
+});
+
+describe("national design official links", () => {
+  it("does not invent query-carrying URLs for INPI, UIBM or OEPM", () => {
+    const links = officialLinks({ keyword: "mug" }, "designs");
+    for (const id of ["inpi-data", "uibm-bancadati", "oepm-disenos", "designview"]) {
+      const item = links.find((link) => link.id === id);
+      expect(item?.queryCarried).toBe(false);
+      expect(item?.href.includes("mug")).toBe(false);
+    }
+    expect(links.find((item) => item.id === "inpi-data")?.href).toBe(
+      "https://data.inpi.fr/recherche_avancee/dessins_modeles",
+    );
+    expect(links.find((item) => item.id === "uibm-bancadati")?.href).toContain("uibm.gov.it");
+    expect(links.find((item) => item.id === "oepm-disenos")?.href).toContain("DisenosWeb");
+    expect(links.find((item) => item.id === "designview")?.href).toBe(
+      "https://www.tmdn.org/tmdsview-web/#/dsview",
+    );
+  });
+
+  it("does not add national design registers to invention search", () => {
+    const ids = officialLinks({ keyword: "battery" }, "utility").map((item) => item.id);
+    expect(ids).not.toContain("dpma-register");
+    expect(ids).not.toContain("inpi-data");
+    expect(ids).not.toContain("designview");
+  });
+
+  it("adds DesignView on the official image-search panel", () => {
+    const links = officialLinks({}, "image");
+    expect(links.some((item) => item.id === "designview-image")).toBe(true);
+    expect(links.every((item) => item.queryCarried)).toBe(false);
+  });
+});
+
